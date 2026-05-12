@@ -150,8 +150,7 @@ def parse_args(argv, exe_name, desc):
     arg_parser.add_argument('--meta', action='store_true', default=False,
                             help='[Default is false] Enable metagenomic mode: '
                                  'allows multiple consensus sequences per OG '
-                                 '(one per metagenomic species). May produce '
-                                 'false positives - see README.')
+                                 '(one per metagenomic species).')
 
     arg_parser.add_argument('--meta_min_markers', type=int, default=0,
                             help='[Default is 0; only used with --meta] '
