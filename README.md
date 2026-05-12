@@ -107,6 +107,20 @@ read2tree --step 2map --standalone_path marker_genes  --dna_reference dna_ref.fa
 read2tree  --step 3combine --standalone_path marker_genes  --dna_reference dna_ref.fa  --output_path output  --tree --debug
 ```
 
+### Metagenomic mode
+
+Pass `--meta` to enable metagenomic mode. In this mode, multiple consensus sequences per OG are kept (one per metagenomic species detected in the reads), instead of selecting a single best consensus.
+
+```
+read2tree --step 3combine --standalone_path marker_genes --dna_reference dna_ref.fa --output_path output --tree --meta --meta_min_markers 50 --meta_marker_fraction 0.5
+```
+
+Tunable filters (only active with `--meta`):
+- `--meta_min_markers` (int, default `0`): minimum number of marker genes a metagenomic species must have to be retained.
+- `--meta_marker_fraction` (float in 0-1, default `0.0`): minimum fraction of total marker genes a metagenomic species must have alignments in.
+
+**Note on false positives:** metagenomic mode is permissive by design and may include species that share marker reads only by chance. We recommend tuning `--meta_min_markers` and `--meta_marker_fraction` to your dataset (e.g. `50` and `0.5` as a starting point for typical microbial communities) to reduce false positives.
+
 ### bootstraping
 
 To have bootstrap values a metric for quality of internal nodes, you can run the following 

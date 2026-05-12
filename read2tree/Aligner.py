@@ -163,14 +163,14 @@ class Aligner(object):
                 # get all species that are not mapped from original alignment
                 if name_og in ogset_add.keys():
                     # find mapped records from appended records in OGSet
-                    if data=='metag':
+                    if self.args.meta:
                         map_record_aa = [r for r in ogset_add[name_og].aa if species_name in r.id]
                         map_record_dna = [r for r in ogset_add[name_og].dna if species_name in r.id]
                     else:
                         map_record_aa = [r for r in ogset_add[name_og].aa if species_name == r.id]
                         map_record_dna = [r for r in ogset_add[name_og].dna if species_name == r.id]
                     if map_record_aa and map_record_dna:
-                        if data=='metag':
+                        if self.args.meta:
                             for recidx, map_record_aa_i  in enumerate(map_record_aa):
                                 map_record_dna_i = map_record_dna[recidx]
                                 ref_species = self._get_species_id(map_record_aa_i)
@@ -404,8 +404,7 @@ class Aligner(object):
             else:
                 return grp
 
-        data = 'metag'
-        if data == 'metag':
+        if self.args.meta:
             dic_ogs_ = {}
             for ogID, recs in use_alignments.items():
                 for rec in recs.aa:
@@ -423,14 +422,15 @@ class Aligner(object):
                     metag_species= species
                     list_metag_species_all.append(metag_species)
                     list_og_num_all.append(len(og_list)) # /total_num_ogs
-                    if len(og_list) > 50 and len(og_list)/total_num_ogs > 0.5:
+                    if len(og_list) > self.args.meta_min_markers and \
+                            len(og_list)/total_num_ogs > self.args.meta_marker_fraction:
                         list_metag_species_selected.append(metag_species)
             print(len(list_metag_species_selected))
             logger.info('Metagenomic mode retained %d species after filtering', len(list_metag_species_selected))
             print(self._species_name)
             logger.info('%s: %d metagenomic species passed filters', self._species_name, len(list_metag_species_selected),)
         for key in sorted(use_alignments.keys(), key=sorter_groups):
-            if data == 'metag':
+            if self.args.meta:
                 value = use_alignments[key]
                 filtered_msa_aa=MultipleSeqAlignment([i for i in value.aa if len(i.id)==5 or i.id in list_metag_species_selected ])
                 filtered_msa_dna = MultipleSeqAlignment([i for i in value.dna if len(i.id) == 5 or i.id in list_metag_species_selected])

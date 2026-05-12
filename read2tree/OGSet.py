@@ -531,7 +531,7 @@ class OGSet(object):
                              for rec in cons_og_filt.aa
                              if self._get_id_rec(rec) in mapper.all_cov.keys()}
                     if len(cons_og_filt.aa) >= 1:  # we had at least one mapped og even after removal
-                        if data != "metag": # s
+                        if not self.args.meta:
                             best_records = cons_og_filt \
                                 .get_best_consensus_by_seq_completeness(self.args.sequence_selection_mode,
                                     sc=og_sc, cov=og_cov, threshold=self.args.sc_threshold)
@@ -555,7 +555,7 @@ class OGSet(object):
                             else:  # case where no best_record_aa reported because it was smaller than the self.args.sc_threshold
                                 self.mapped_ogs[name_og] = og_filt
 
-                        if data == "metag":
+                        if self.args.meta:
                             self.logger.info('----Working on metag data----')
                             self.logger.info(self._species_name)
                             self.logger.info('%s: working on metagenomic data', self._species_name,)
