@@ -64,6 +64,10 @@ class ReferenceSet(object):
         ref_dict = {}
         print('--- Generating reference for mapping from folder ---')
         ref_dna = os.path.join(self.args.output_path, '02_ref_dna')
+
+        if not os.path.exists(ref_dna):
+            print('The ref_dna folder {} does not exist. Step 1 was incomplete probably.'.format(str(ref_dna)))
+            sys.exit(1)
         for file in tqdm(glob.glob(os.path.join(ref_dna, "*.fa")), desc="Re-loading references for mapping from folder", unit=" species"):
             species_name = file.split("/")[-1].split("_")[0]
             ref_dict[species_name] = Reference()

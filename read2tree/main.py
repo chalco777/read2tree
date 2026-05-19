@@ -147,6 +147,23 @@ def parse_args(argv, exe_name, desc):
                             help='[Default is sc] Possibilities are cov and cov_sc '
                                  'for mapped sequence.')
 
+    arg_parser.add_argument('--meta', action='store_true', default=False,
+                            help='[Default is false] Enable metagenomic mode: '
+                                 'allows multiple consensus sequences per OG '
+                                 '(one per metagenomic species).')
+
+    arg_parser.add_argument('--meta_min_markers', type=int, default=0,
+                            help='[Default is 0; only used with --meta] '
+                                 'Minimum number of marker genes (OGs) a '
+                                 'metagenomic species must have to be retained '
+                                 'in the final concatenated alignment.')
+
+    arg_parser.add_argument('--meta_marker_fraction', type=float, default=0.0,
+                            help='[Default is 0.0; Range 0-1; only used with --meta] '
+                                 'Minimum fraction of total marker genes a '
+                                 'metagenomic species must have alignments in '
+                                 'to be retained.')
+
     arg_parser.add_argument('-s', '--species_name', default="",
                             help='[Default is name of read 1st file] Name of species '
                                  'for mapped sequence.')
